@@ -10,7 +10,7 @@ import br.com.SaulProgramador.hotel.DAO.ReservasDAO;
 import br.com.SaulProgramador.hotel.modelo.Reserva;
 
 public class ReservasController {
-
+	
 	private ReservasDAO reservasDAO;
 
 	public ReservasController() {
@@ -24,7 +24,10 @@ public class ReservasController {
 		Reserva reserva = new Reserva(null, dataEntrada, dataSaida, valor, formaPagamento);
 
 		reservasDAO.registrar(reserva);
-
+	}
+	
+	public void commit() {
+		reservasDAO.commit();
 	}
 
 	public Double calcularValor(Date dataEntrada, Date dataSaida) {

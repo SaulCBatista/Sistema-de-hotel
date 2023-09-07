@@ -2,7 +2,7 @@ package br.com.SaulProgramador.hotel.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import br.com.SaulProgramador.hotel.modelo.Reserva;
 
@@ -16,6 +16,7 @@ public class ReservasDAO {
 	
 	public void registrar(Reserva reserva) {
 		try {
+			this.conexao.setAutoCommit(false);
 			String sql = "INSERT INTO reservas(data_entrada, data_saida, valor, forma_pagamento) VALUES(?, ?, ?, ?)";
 			
 			try(PreparedStatement declaracao = conexao.prepareStatement(sql)){
@@ -25,16 +26,25 @@ public class ReservasDAO {
 				declaracao.setString(4, reserva.getFormaPagamento());
 				
 				declaracao.execute();
+				System.out.println("Finalizado");
 				
-				try(ResultSet resultado = declaracao.getResultSet()) {
-					while(resultado.next()) {
-						reserva.setId(resultado.getInt(1));
-					}
-				}
+//				try(ResultSet resultado = declaracao.getResultSet()) {
+//					while(resultado.next()) {
+//						reserva.setId(resultado.getInt(1));
+//						System.out.println("finalizado");
+//					}
+//				}
 			}
-			
 		} catch (Exception e) {
-			new RuntimeException(e);
+			new SQLException(e).printStackTrace();;
+		}
+	}
+	
+	public void commit() {
+		try {			
+			this.conexao.commit();
+		} catch (Exception e) {
+			new SQLException(e).printStackTrace();;
 		}
 	}
 	

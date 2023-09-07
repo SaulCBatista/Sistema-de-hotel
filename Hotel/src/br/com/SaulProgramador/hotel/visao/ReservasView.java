@@ -1,7 +1,6 @@
 package br.com.SaulProgramador.hotel.visao;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -10,11 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -47,22 +42,10 @@ public class ReservasView extends JFrame{
 	private JLabel lblValorSimbolo; 
 	private JLabel labelAtras;
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ReservasView frame = new ReservasView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
 	/**
 	 * Criação da tela.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ReservasView() {
 		super("Reserva");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/imagens/aH-40px.png")));
@@ -324,8 +307,9 @@ public class ReservasView extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (ReservasView.txtDataE.getDate() != null && ReservasView.txtDataS.getDate() != null) {
-//					RegistroHospede registro = new RegistroHospede();
-//					registro.setVisible(true);
+					new ReservasController().registrar(txtDataE.getDate(), txtDataS.getDate(), txtFormaPagamento.getSelectedItem().toString());
+					RegistroHospede registro = new RegistroHospede();
+					registro.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
 				}
