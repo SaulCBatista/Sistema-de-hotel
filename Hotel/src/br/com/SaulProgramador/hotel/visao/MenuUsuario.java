@@ -1,6 +1,7 @@
 package br.com.SaulProgramador.hotel.visao;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -25,6 +26,22 @@ public class MenuUsuario extends JFrame{
 	int xMouse, yMouse;
 	private JLabel labelExit;
 	private JLabel labelRegistro;
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MenuUsuario frame = new MenuUsuario();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	
 	/**
 	 * Criação da janela
@@ -74,9 +91,9 @@ public class MenuUsuario extends JFrame{
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				Buscar buscar = new Buscar();
-//				buscar.setVisible(true);
-//				dispose();
+				Buscar buscar = new Buscar();
+				buscar.setVisible(true);
+				dispose();
 			}
 		});
 		

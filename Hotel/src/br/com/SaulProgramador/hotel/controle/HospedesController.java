@@ -33,7 +33,8 @@ public class HospedesController {
 	}
 	
 	public void deletar(Integer id, Integer idReserva) {
-		Hospede.deletar();
+		Hospede.deletar(id);
+		Reserva.deletar(idReserva);
 		hospedesDAO.deletar(id);
 		new ReservasDAO(new Conexao().recuperarConexao()).deletar(idReserva);
 	}

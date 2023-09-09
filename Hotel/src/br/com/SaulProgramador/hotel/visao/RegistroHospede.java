@@ -1,7 +1,6 @@
 package br.com.SaulProgramador.hotel.visao;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -39,22 +38,6 @@ public class RegistroHospede extends JFrame {
 	private JLabel labelExit;
 	private JLabel labelAtras;
 	int xMouse, yMouse;
-
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					RegistroHospede frame = new RegistroHospede();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Criação da tela.
@@ -272,6 +255,10 @@ public class RegistroHospede extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				Integer id = new HospedesController().registrar(txtNome.getText(), txtSobrenome.getText(), txtDataN.getDate(), txtNacionalidade.getSelectedItem().toString(), txtTelefone.getText());
 				JOptionPane.showMessageDialog(null, "Reserva do " + txtNome.getText() + " feita com sucesso, o id da reserva é: " + id);
+				MenuUsuario menuUsuario = new MenuUsuario();
+				menuUsuario.setVisible(true);
+				dispose();
+				
 			}
 		});
 		btnsalvar.setLayout(null);

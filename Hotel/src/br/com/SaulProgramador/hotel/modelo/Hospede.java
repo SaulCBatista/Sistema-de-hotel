@@ -102,8 +102,12 @@ public class Hospede {
 		return hospedes;
 	}
 
-	public static void deletar() {
-		
+	public static void deletar(Integer id) {
+		for(int i = 0; i < Hospede.hospedes.size(); i++) {
+			if(Hospede.hospedes.get(i).getId() == id) {
+				Hospede.hospedes.remove(i);
+			}
+		}
 	}
 
 	public static void vincularComBancoDeDados(List<Hospede> hospedes) {

@@ -80,13 +80,19 @@ public class Reserva {
 		return reservas;
 	}
 
-	public static void deletar() {
-		// TODO Auto-generated method stub
-
+	public static void deletar(Integer id) {
+		for(int i = 0; i < Reserva.reservas.size(); i++) {
+			if(Reserva.reservas.get(i).getId() == id) {
+				Reserva.reservas.remove(i);
+			}
+		}
 	}
 
 	public static Integer cancelarReserva() {
-		return reservas.get(reservas.size() - 1).getId();
+		Integer id = reservas.get(reservas.size() - 1).getId();
+		reservas.remove(reservas.size() - 1);
+		return id;
+		
 	}
 
 	public static Integer vincularComHospede() {

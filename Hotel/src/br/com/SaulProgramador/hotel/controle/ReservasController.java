@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import br.com.SaulProgramador.exception.DataImpossivelException;
 import br.com.SaulProgramador.hotel.DAO.Conexao;
-import br.com.SaulProgramador.hotel.DAO.HospedesDAO;
 import br.com.SaulProgramador.hotel.DAO.ReservasDAO;
 import br.com.SaulProgramador.hotel.modelo.Reserva;
 
@@ -35,9 +34,7 @@ public class ReservasController {
 	}
 	
 	public void deletar(Integer id, Integer idHospede) {
-		Reserva.deletar();
-		reservasDAO.deletar(id);
-		new HospedesDAO(new Conexao().recuperarConexao()).deletar(idHospede);
+		new HospedesController().deletar(idHospede, id);
 	}
 
 	public Double calcularValor(Date dataEntrada, Date dataSaida) {
