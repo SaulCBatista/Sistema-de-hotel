@@ -30,7 +30,7 @@ import br.com.SaulProgramador.hotel.controle.ReservasController;
 
 	
 @SuppressWarnings("serial")
-public class ReservasView extends JFrame{
+public class RegistroReservas extends JFrame{
 
 	private JPanel contentPane;
 	public static JTextField txtValor;
@@ -46,9 +46,9 @@ public class ReservasView extends JFrame{
 	 * Criação da tela.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ReservasView() {
+	public RegistroReservas() {
 		super("Reserva");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/imagens/aH-40px.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroReservas.class.getResource("/imagens/aH-40px.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 560);
 		setResizable(false);
@@ -90,7 +90,7 @@ public class ReservasView extends JFrame{
 		
 		txtDataE = new JDateChooser();
 		txtDataE.getCalendarButton().setBackground(SystemColor.textHighlight);
-		txtDataE.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/icon-reservas.png")));
+		txtDataE.getCalendarButton().setIcon(new ImageIcon(RegistroReservas.class.getResource("/imagens/icon-reservas.png")));
 		txtDataE.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 12));
 		txtDataE.setBounds(68, 161, 289, 35);
 		txtDataE.getCalendarButton().setBounds(268, 0, 21, 33);
@@ -130,7 +130,7 @@ public class ReservasView extends JFrame{
 		panel.add(lblCheckOut);
 		
 		txtDataS = new JDateChooser();
-		txtDataS.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/icon-reservas.png")));
+		txtDataS.getCalendarButton().setIcon(new ImageIcon(RegistroReservas.class.getResource("/imagens/icon-reservas.png")));
 		txtDataS.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 11));
 		txtDataS.setBounds(68, 246, 289, 35);
 		txtDataS.getCalendarButton().setBounds(267, 1, 21, 31);
@@ -208,13 +208,13 @@ public class ReservasView extends JFrame{
 		JLabel logo = new JLabel("");
 		logo.setBounds(197, 68, 104, 107);
 		panel_1.add(logo);
-		logo.setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/Ha-100px.png")));
+		logo.setIcon(new ImageIcon(RegistroReservas.class.getResource("/imagens/Ha-100px.png")));
 		
 		JLabel imagenFundo = new JLabel("");
 		imagenFundo.setBounds(0, 140, 500, 409);
 		panel_1.add(imagenFundo);
 		imagenFundo.setBackground(Color.WHITE);
-		imagenFundo.setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/reservas-img-3.png")));
+		imagenFundo.setIcon(new ImageIcon(RegistroReservas.class.getResource("/imagens/reservas-img-3.png")));
 		
 		JPanel btnexit = new JPanel();
 		btnexit.addMouseListener(new MouseAdapter() {
@@ -306,7 +306,7 @@ public class ReservasView extends JFrame{
 		btnProximo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (ReservasView.txtDataE.getDate() != null && ReservasView.txtDataS.getDate() != null) {
+				if (RegistroReservas.txtDataE.getDate() != null && RegistroReservas.txtDataS.getDate() != null) {
 					new ReservasController().registrar(txtDataE.getDate(), txtDataS.getDate(), txtFormaPagamento.getSelectedItem().toString());
 					RegistroHospede registro = new RegistroHospede();
 					registro.setVisible(true);

@@ -1,27 +1,31 @@
 package br.com.SaulProgramador.hotel.visao;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
 import java.awt.Color;
-import com.toedter.calendar.JDateChooser;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
+import java.awt.EventQueue;
 import java.awt.Font;
-import javax.swing.ImageIcon;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.Format;
-import java.awt.Toolkit;
-import javax.swing.SwingConstants;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import com.toedter.calendar.JDateChooser;
+
+import br.com.SaulProgramador.hotel.controle.HospedesController;
+import br.com.SaulProgramador.hotel.controle.ReservasController;
 
 @SuppressWarnings("serial")
 public class RegistroHospede extends JFrame {
@@ -36,21 +40,21 @@ public class RegistroHospede extends JFrame {
 	private JLabel labelAtras;
 	int xMouse, yMouse;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistroHospede frame = new RegistroHospede();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					RegistroHospede frame = new RegistroHospede();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Criação da tela.
@@ -91,9 +95,11 @@ public class RegistroHospede extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				new ReservasController().cancelarReserva();
 				MenuPrincipal principal = new MenuPrincipal();
 				principal.setVisible(true);
 				dispose();
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -125,9 +131,10 @@ public class RegistroHospede extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReservasView reservas = new ReservasView();
+				new ReservasController().cancelarReserva();
+				RegistroReservas reservas = new RegistroReservas();
 				reservas.setVisible(true);
-				dispose();				
+				dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -263,7 +270,8 @@ public class RegistroHospede extends JFrame {
 		btnsalvar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Reserva do fulano feita com sucesso, o id da reserva é: 2");
+				Integer id = new HospedesController().registrar(txtNome.getText(), txtSobrenome.getText(), txtDataN.getDate(), txtNacionalidade.getSelectedItem().toString(), txtTelefone.getText());
+				JOptionPane.showMessageDialog(null, "Reserva do " + txtNome.getText() + " feita com sucesso, o id da reserva é: " + id);
 			}
 		});
 		btnsalvar.setLayout(null);

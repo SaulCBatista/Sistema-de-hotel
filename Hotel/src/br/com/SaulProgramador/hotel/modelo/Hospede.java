@@ -1,6 +1,8 @@
 package br.com.SaulProgramador.hotel.modelo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Hospede {
 
@@ -12,7 +14,10 @@ public class Hospede {
 	private String telefone;
 	private Integer idReserva;
 
-	public Hospede(Integer id, String nome, String sobrenome, Date dataNascimento, String nacionalidade, String telefone, Integer idReserva) {
+	private static List<Hospede> hospedes = new ArrayList<Hospede>();
+
+	public Hospede(Integer id, String nome, String sobrenome, Date dataNascimento, String nacionalidade,
+			String telefone, Integer idReserva) {
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
@@ -25,7 +30,7 @@ public class Hospede {
 	public String getNome() {
 		return this.nome;
 	}
- 
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -52,7 +57,7 @@ public class Hospede {
 
 	public void setNacionalidade(String nacionalidade) {
 		this.nacionalidade = nacionalidade;
-	} 
+	}
 
 	public String getTelefone() {
 		return this.telefone;
@@ -62,12 +67,47 @@ public class Hospede {
 		this.telefone = telefone;
 	}
 
-	public Integer getId() { 
-		return this.id; 
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		if (this.id == null) {
+			this.id = id;
+		}
 	}
 
 	public Integer getIdReserva() {
 		return this.idReserva;
+	}
+
+	public void setIdReserva(Integer idReserva) {
+		if (this.id == null) {
+			this.idReserva = idReserva;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "id: " + this.getId() + ", nome: " + this.getNome() + ", sobrenome" + this.getNome()
+				+ ", data de nascimento: " + this.getDataNascimento() + ", nascionalidade: " + this.getNacionalidade()
+				+ ", telefone: " + this.getTelefone() + ", id da reserva: " + this.getIdReserva();
+	}
+
+	public static void registrar(Hospede hospede) {
+		hospedes.add(hospede);
+	}
+
+	public static List<Hospede> listar() {
+		return hospedes;
+	}
+
+	public static void deletar() {
+		
+	}
+
+	public static void vincularComBancoDeDados(List<Hospede> hospedes) {
+		Hospede.hospedes = hospedes;
 	}
 
 }
