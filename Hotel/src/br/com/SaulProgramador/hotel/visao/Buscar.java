@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -22,6 +23,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import br.com.SaulProgramador.hotel.controle.HospedesController;
+import br.com.SaulProgramador.hotel.controle.ReservasController;
+import br.com.SaulProgramador.hotel.modelo.Hospede;
+import br.com.SaulProgramador.hotel.modelo.Reserva;
+
 @SuppressWarnings("serial")
 public class Buscar extends JFrame{
 	
@@ -29,7 +35,7 @@ public class Buscar extends JFrame{
 	private JTextField txtBuscar;
 	private JTable tbHospedes;
 	private JTable tbReservas;
-	private DefaultTableModel modelo;
+	private DefaultTableModel modeloReservas;
 	private DefaultTableModel modeloHospedes;
 	private JLabel labelAtras;
 	private JLabel labelExit;
@@ -88,12 +94,18 @@ public class Buscar extends JFrame{
 		tbReservas = new JTable();
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
-		modelo = (DefaultTableModel) tbReservas.getModel();
-		modelo.addColumn("Numero de Reserva");
-		modelo.addColumn("Data Check In");
-		modelo.addColumn("Data Check Out");
-		modelo.addColumn("Valor");
-		modelo.addColumn("Forma de Pago");
+		modeloReservas = (DefaultTableModel) tbReservas.getModel();
+		modeloReservas.addColumn("Numero de Reserva");
+		modeloReservas.addColumn("Data Check In");
+		modeloReservas.addColumn("Data Check Out");
+		modeloReservas.addColumn("Valor");
+		modeloReservas.addColumn("Forma de Pago");
+		List<Reserva> reservas = new ReservasController().listar();
+		for(int i = 0; i < reservas.size(); i++) {
+			Reserva reserva = reservas.get(i);
+			String[] linhaDeReservas = {reserva.getId().toString(), reserva.getDataEntrada().toString(), reserva.getDataSaida().toString(), reserva.getValor().toString(), reserva.getFormaPagamento()};
+			modeloReservas.addRow(linhaDeReservas);			
+		}
 		JScrollPane scroll_table = new JScrollPane(tbReservas);
 		panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagens/reservado.png")), scroll_table, null);
 		scroll_table.setVisible(true);
@@ -110,9 +122,15 @@ public class Buscar extends JFrame{
 		modeloHospedes.addColumn("Nacionalidade");
 		modeloHospedes.addColumn("Telefone");
 		modeloHospedes.addColumn("Numero de Reserva");
-		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHospedes);
-		panel.addTab("Hospedes", new ImageIcon(Buscar.class.getResource("/imagens/pessoas.png")), scroll_tableHuespedes, null);
-		scroll_tableHuespedes.setVisible(true);
+		List<Hospede> hospedes = new HospedesController().listar();
+		for(int i = 0; i < hospedes.size(); i++) {
+			Hospede hospede = hospedes.get(i);
+			String[] linhaDeHospedes = {hospede.getId().toString(), hospede.getNome(), hospede.getSobrenome(), hospede.getDataNascimento().toString(), hospede.getNacionalidade(), hospede.getTelefone(), hospede.getIdReserva().toString()};
+			modeloHospedes.addRow(linhaDeHospedes);
+		}
+		JScrollPane scroll_tableHospedes = new JScrollPane(tbHospedes);
+		panel.addTab("Hospedes", new ImageIcon(Buscar.class.getResource("/imagens/pessoas.png")), scroll_tableHospedes, null);
+		scroll_tableHospedes.setVisible(true);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/imagens/Ha-100px.png")));

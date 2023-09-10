@@ -40,7 +40,7 @@ public class Teste {
 		System.out.println("hospedes inicio");
 		System.out.println();
 		
-		hospedesController.deletar(13, 28);
+		hospedesController.deletar(1, 5);
 		
 		System.out.println();
 		listaR.forEach(reserva -> System.out.println(reserva));
