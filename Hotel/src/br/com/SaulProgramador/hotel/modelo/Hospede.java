@@ -89,7 +89,7 @@ public class Hospede {
 
 	@Override
 	public String toString() {
-		return "id: " + this.getId() + ", nome: " + this.getNome() + ", sobrenome" + this.getNome()
+		return "id: " + this.getId() + ", nome: " + this.getNome() + ", sobrenome: " + this.getNome()
 				+ ", data de nascimento: " + this.getDataNascimento() + ", nascionalidade: " + this.getNacionalidade()
 				+ ", telefone: " + this.getTelefone() + ", id da reserva: " + this.getIdReserva();
 	}
@@ -102,9 +102,21 @@ public class Hospede {
 		return hospedes;
 	}
 
-	public static void deletar(Integer id) {
+	public static List<Hospede> buscarPorIdDeReservaOuSobrenome(Integer idReserva, String sobrenome) {
+		List<Hospede> listaDeHopedes = new ArrayList<Hospede>();
+		
 		for(int i = 0; i < Hospede.hospedes.size(); i++) {
-			if(Hospede.hospedes.get(i).getId() == id) {
+			if(Hospede.hospedes.get(i).getIdReserva() == idReserva || Hospede.hospedes.get(i).getSobrenome() == sobrenome) {
+				listaDeHopedes.add(Hospede.hospedes.get(i));
+			}
+		}
+		
+		return listaDeHopedes;
+	}
+
+	public static void deletar(Integer id) {
+		for (int i = 0; i < Hospede.hospedes.size(); i++) {
+			if (Hospede.hospedes.get(i).getId() == id) {
 				Hospede.hospedes.remove(i);
 			}
 		}

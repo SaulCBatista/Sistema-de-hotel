@@ -33,6 +33,10 @@ public class ReservasController {
 		return Reserva.listar();
 	}
 	
+	public List<Reserva> buscarPorId(Integer id) {
+		return Reserva.buscarPorId(id);
+	}
+	
 	public void deletar(Integer id, Integer idHospede) {
 		new HospedesController().deletar(idHospede, id);
 	}

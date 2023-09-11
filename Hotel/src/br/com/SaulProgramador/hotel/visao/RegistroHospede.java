@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -254,9 +253,8 @@ public class RegistroHospede extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Integer id = new HospedesController().registrar(txtNome.getText(), txtSobrenome.getText(), txtDataN.getDate(), txtNacionalidade.getSelectedItem().toString(), txtTelefone.getText());
-				JOptionPane.showMessageDialog(null, "Reserva do " + txtNome.getText() + " feita com sucesso, o id da reserva é: " + id);
-				MenuUsuario menuUsuario = new MenuUsuario();
-				menuUsuario.setVisible(true);
+				Sucesso menuSucesso = new Sucesso(txtNome.getText(), id.toString());
+				menuSucesso.setVisible(true);
 				dispose();
 				
 			}

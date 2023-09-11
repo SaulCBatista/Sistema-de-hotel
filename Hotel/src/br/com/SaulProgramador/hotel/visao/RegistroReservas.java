@@ -1,6 +1,7 @@
 package br.com.SaulProgramador.hotel.visao;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -41,6 +42,19 @@ public class RegistroReservas extends JFrame{
 	private JLabel labelExit;
 	private JLabel lblValorSimbolo; 
 	private JLabel labelAtras;
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Buscar frame = new Buscar();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	
 	/**
 	 * Criação da tela.
@@ -194,7 +208,7 @@ public class RegistroReservas extends JFrame{
 		panel.add(lblFormaPago);
 		
 		JLabel lblTitulo = new JLabel("SISTEMA DE RESERVAS");
-		lblTitulo.setBounds(109, 60, 219, 42);
+		lblTitulo.setBounds(109, 60, 239, 42);
 		lblTitulo.setForeground(new Color(12, 138, 199));
 		lblTitulo.setFont(new Font("Roboto", Font.BOLD, 20));
 		panel.add(lblTitulo);
@@ -310,6 +324,7 @@ public class RegistroReservas extends JFrame{
 					new ReservasController().registrar(txtDataE.getDate(), txtDataS.getDate(), txtFormaPagamento.getSelectedItem().toString());
 					RegistroHospede registro = new RegistroHospede();
 					registro.setVisible(true);
+					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
 				}

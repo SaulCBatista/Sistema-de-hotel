@@ -32,6 +32,10 @@ public class HospedesController {
 		return Hospede.listar();
 	}
 	
+	public List<Hospede> buscarPorIdDeReservaOuSobrenome(Integer idReserva, String sobrenome) {
+		return Hospede.buscarPorIdDeReservaOuSobrenome(idReserva, sobrenome);
+	}
+	
 	public void deletar(Integer id, Integer idReserva) {
 		Hospede.deletar(id);
 		Reserva.deletar(idReserva);

@@ -80,6 +80,17 @@ public class Reserva {
 		return reservas;
 	}
 
+	public static List<Reserva> buscarPorId(Integer id) {
+		List<Reserva> listaDeReservas = new ArrayList<Reserva>();
+		
+		for(int i = 0; i < Reserva.reservas.size(); i++) {
+			if(Reserva.reservas.get(i).getId() == id) {
+				listaDeReservas.add(reservas.get(i));
+			}
+		}
+		return listaDeReservas;
+	}
+	
 	public static void deletar(Integer id) {
 		for(int i = 0; i < Reserva.reservas.size(); i++) {
 			if(Reserva.reservas.get(i).getId() == id) {
