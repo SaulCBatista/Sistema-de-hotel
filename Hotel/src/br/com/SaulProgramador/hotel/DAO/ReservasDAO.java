@@ -18,9 +18,8 @@ public class ReservasDAO {
 		this.conexao = conexao;
 	}
 	
-	public void registrar(Reserva reserva) {
+	public Integer registrar(Reserva reserva) {
 		try {
-		
 			String sql = "INSERT INTO reservas(data_entrada, data_saida, valor, forma_pagamento) VALUES(?, ?, ?, ?)";
 			
 			try(PreparedStatement declaracao = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
@@ -37,8 +36,9 @@ public class ReservasDAO {
 					}
 				}
 			}
-		} catch (Exception e) {
-			new SQLException(e).printStackTrace();;
+			return reserva.getId();
+		}  catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
 		
 	}
@@ -54,8 +54,43 @@ public class ReservasDAO {
 				trasformarResultSetEmReservas(reservas, declaracao);
 			}
 			return reservas;
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public List<Reserva> buscarPorId(Integer id){
+		List<Reserva> reservas = new ArrayList<Reserva>();
+		try {
+			String sql = "SELECT * FROM reservas WHERE id = ?";
+			
+			try(PreparedStatement declaracao = conexao.prepareStatement(sql)) {
+				declaracao.setInt(1, id);
+				declaracao.execute();
+				
+				trasformarResultSetEmReservas(reservas, declaracao);
+			}
+			return reservas;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		}
+		
+	}
+	
+	public void atualiazar(Reserva reserva) {
+		try {
+			String sql = "UPDATE reservas SET data_entrada = ?, data_saida = ?, valor = ?, forma_pagamento = ?";
+			
+			try(PreparedStatement declaracao = conexao.prepareStatement(sql)) {
+				declaracao.setDate(1, new java.sql.Date(reserva.getDataEntrada().getTime()));
+				declaracao.setDate(2, new java.sql.Date(reserva.getDataSaida().getTime()));
+				declaracao.setDouble(3, reserva.getValor());
+				declaracao.setString(4, reserva.getFormaPagamento());
+				
+				declaracao.execute();
+			}
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -68,8 +103,8 @@ public class ReservasDAO {
 				declaracao.setInt(1, id);
 				declaracao.execute();
 			}
-		} catch (Exception e) {
-			new SQLException(e).printStackTrace();
+		}  catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

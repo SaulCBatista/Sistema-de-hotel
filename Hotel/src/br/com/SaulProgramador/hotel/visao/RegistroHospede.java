@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -42,7 +43,7 @@ public class RegistroHospede extends JFrame {
 	 * Criação da tela.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public RegistroHospede() {
+	public RegistroHospede(Integer idDaReserva) {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHospede.class.getResource("/imagens/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,7 +78,7 @@ public class RegistroHospede extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ReservasController().cancelarReserva();
+				new ReservasController().cancelarReserva(idDaReserva);
 				MenuPrincipal principal = new MenuPrincipal();
 				principal.setVisible(true);
 				dispose();
@@ -113,7 +114,7 @@ public class RegistroHospede extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ReservasController().cancelarReserva();
+				new ReservasController().cancelarReserva(idDaReserva);
 				RegistroReservas reservas = new RegistroReservas();
 				reservas.setVisible(true);
 				dispose();
@@ -252,10 +253,18 @@ public class RegistroHospede extends JFrame {
 		btnsalvar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Integer id = new HospedesController().registrar(txtNome.getText(), txtSobrenome.getText(), txtDataN.getDate(), txtNacionalidade.getSelectedItem().toString(), txtTelefone.getText());
-				Sucesso menuSucesso = new Sucesso(txtNome.getText(), id.toString());
-				menuSucesso.setVisible(true);
-				dispose();
+				if(!txtNome.getText().isBlank() & !txtSobrenome.getText().isBlank() & txtDataN.getDate() != null & txtNacionalidade != null & !txtTelefone.getText().isBlank()) {
+					if(new HospedesController().verificarIdade(txtDataN.getDate())) {
+						new HospedesController().registrar(txtNome.getText(), txtSobrenome.getText(), txtDataN.getDate(), txtNacionalidade.getSelectedItem().toString(), txtTelefone.getText(), idDaReserva);
+						Sucesso menuSucesso = new Sucesso(txtNome.getText(), idDaReserva.toString());
+						dispose();
+						menuSucesso.setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "O hospede dever ter pelo menos 18 anos.");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.");
+				}
 				
 			}
 		});

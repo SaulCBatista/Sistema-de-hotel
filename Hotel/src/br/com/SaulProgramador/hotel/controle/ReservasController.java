@@ -19,28 +19,30 @@ public class ReservasController {
 		this.reservasDAO = new ReservasDAO(conexao);
 	}
 
-	public void registrar(Date dataEntrada, Date dataSaida, String formaPagamento) {
+	public Integer registrar(Date dataEntrada, Date dataSaida, String formaPagamento) {
 
 		Double valor = calcularValor(dataEntrada, dataSaida);
 		
 		Reserva reserva = new Reserva(null, dataEntrada, dataSaida, valor, formaPagamento);
-		reservasDAO.registrar(reserva);
-		Reserva.registrar(reserva);
+		return reservasDAO.registrar(reserva);
 	}
 	
 	public List<Reserva> listar(){
-		this.vicularComBancoDeDados();
-		return Reserva.listar();
+		return reservasDAO.listar();
 	}
 	
 	public List<Reserva> buscarPorId(Integer id) {
-		return Reserva.buscarPorId(id);
+		return reservasDAO.buscarPorId(id);
 	}
 	
 	public void deletar(Integer id, Integer idHospede) {
 		new HospedesController().deletar(idHospede, id);
 	}
 
+	public void cancelarReserva(Integer idDaReserva) {
+		reservasDAO.deletar(idDaReserva);
+	}
+	
 	public Double calcularValor(Date dataEntrada, Date dataSaida) {
 		Double valor = 0.0;
 		if(verificarData(dataEntrada, dataSaida)) {
@@ -57,14 +59,4 @@ public class ReservasController {
 	public boolean verificarData(Date dataEntrada, Date dataSaida) {
 		return dataEntrada.before(dataSaida);
 	}
-	
-	public void cancelarReserva() {
-		reservasDAO.deletar(Reserva.cancelarReserva());
-	}
-	
-	public void vicularComBancoDeDados() {
-		List<Reserva> reservas = this.reservasDAO.listar();
-		Reserva.vincularComBancoDeDados(reservas);
-	}
-
 }

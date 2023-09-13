@@ -1,8 +1,6 @@
 package br.com.SaulProgramador.hotel.modelo;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Hospede {
 
@@ -13,8 +11,6 @@ public class Hospede {
 	private String nacionalidade;
 	private String telefone;
 	private Integer idReserva;
-
-	private static List<Hospede> hospedes = new ArrayList<Hospede>();
 
 	public Hospede(Integer id, String nome, String sobrenome, Date dataNascimento, String nacionalidade,
 			String telefone, Integer idReserva) {
@@ -90,40 +86,8 @@ public class Hospede {
 	@Override
 	public String toString() {
 		return "id: " + this.getId() + ", nome: " + this.getNome() + ", sobrenome: " + this.getNome()
-				+ ", data de nascimento: " + this.getDataNascimento() + ", nascionalidade: " + this.getNacionalidade()
-				+ ", telefone: " + this.getTelefone() + ", id da reserva: " + this.getIdReserva();
+		+ ", data de nascimento: " + this.getDataNascimento() + ", nascionalidade: " + this.getNacionalidade()
+		+ ", telefone: " + this.getTelefone() + ", id da reserva: " + this.getIdReserva();
 	}
-
-	public static void registrar(Hospede hospede) {
-		hospedes.add(hospede);
-	}
-
-	public static List<Hospede> listar() {
-		return hospedes;
-	}
-
-	public static List<Hospede> buscarPorIdDeReservaOuSobrenome(Integer idReserva, String sobrenome) {
-		List<Hospede> listaDeHopedes = new ArrayList<Hospede>();
-		
-		for(int i = 0; i < Hospede.hospedes.size(); i++) {
-			if(Hospede.hospedes.get(i).getIdReserva() == idReserva || Hospede.hospedes.get(i).getSobrenome() == sobrenome) {
-				listaDeHopedes.add(Hospede.hospedes.get(i));
-			}
-		}
-		
-		return listaDeHopedes;
-	}
-
-	public static void deletar(Integer id) {
-		for (int i = 0; i < Hospede.hospedes.size(); i++) {
-			if (Hospede.hospedes.get(i).getId() == id) {
-				Hospede.hospedes.remove(i);
-			}
-		}
-	}
-
-	public static void vincularComBancoDeDados(List<Hospede> hospedes) {
-		Hospede.hospedes = hospedes;
-	}
-
+	
 }
