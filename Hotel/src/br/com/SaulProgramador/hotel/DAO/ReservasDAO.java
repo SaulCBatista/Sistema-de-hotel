@@ -78,6 +78,24 @@ public class ReservasDAO {
 		
 	}
 	
+	public List<Reserva> buscarPorSobrenomeDeHospede(String sobrenome) {
+		List<Reserva> reservas = new ArrayList<Reserva>();
+		try {
+			String sql = "SELECT * FROM reservas WHERE id = (SELECT hospedes.id_reservaFK FROM hospedes WHERE sobrenome = ?);";
+			
+			try(PreparedStatement declaracao = conexao.prepareStatement(sql)) {
+				declaracao.setString(1, sobrenome);
+				declaracao.execute();
+				
+				trasformarResultSetEmReservas(reservas, declaracao);
+			}
+			return reservas;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		}
+	}
+	
 	public void atualiazar(Reserva reserva) {
 		try {
 			String sql = "UPDATE reservas SET data_entrada = ?, data_saida = ?, valor = ?, forma_pagamento = ?";
@@ -118,5 +136,6 @@ public class ReservasDAO {
 		}
 		
 	}
+
 	
 }

@@ -60,13 +60,29 @@ public class HospedesDAO {
 		}
 	}
 	
-	public List<Hospede> buscarPorIdDeReservaOuSobrenome(Integer idDeReserva, String sobrenome) {
+	public List<Hospede> buscarPorSobrenome(String sobrenome) {
 		List<Hospede> hospedes = new ArrayList<Hospede>();
 		try {
-			String sql = "SELECT * FROM hospedes WHERE id_reservaFK = ? OR sobrenome = ?"; 
+			String sql = "SELECT * FROM hospedes WHERE sobrenome = ?"; 
+			try(PreparedStatement declaracao = conexao.prepareStatement(sql)) {
+				declaracao.setString(1, sobrenome);
+				declaracao.execute();
+				
+				trasformarResultSetEmHospede(hospedes, declaracao);
+			}
+			return hospedes;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	
+	public List<Hospede> buscarPorIdDeReserva(Integer idDeReserva) {
+		List<Hospede> hospedes = new ArrayList<Hospede>();
+		try {
+			String sql = "SELECT * FROM hospedes WHERE id_reservaFK = ?"; 
 			try(PreparedStatement declaracao = conexao.prepareStatement(sql)) {
 				declaracao.setInt(1, idDeReserva);
-				declaracao.setString(2, sobrenome);
 				declaracao.execute();
 				
 				trasformarResultSetEmHospede(hospedes, declaracao);

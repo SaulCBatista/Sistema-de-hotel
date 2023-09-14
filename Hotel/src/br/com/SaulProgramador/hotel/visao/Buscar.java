@@ -1,6 +1,7 @@
 package br.com.SaulProgramador.hotel.visao;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -47,18 +48,18 @@ public class Buscar extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Buscar frame = new Buscar();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Buscar frame = new Buscar();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Criação da tela.
@@ -102,13 +103,7 @@ public class Buscar extends JFrame {
 		modeloReservas.addColumn("Data Check Out");
 		modeloReservas.addColumn("Valor");
 		modeloReservas.addColumn("Forma de Pago");
-		List<Reserva> reservas = new ReservasController().listar();
-		for (int i = 0; i < reservas.size(); i++) {
-			Reserva reserva = reservas.get(i);
-			String[] linhaDeReservas = { reserva.getId().toString(), reserva.getDataEntrada().toString(),
-					reserva.getDataSaida().toString(), reserva.getValor().toString(), reserva.getFormaPagamento() };
-			modeloReservas.addRow(linhaDeReservas);
-		}
+		listarNaTabelaReservas(new ReservasController().listar());
 		JScrollPane scroll_table = new JScrollPane(tbReservas);
 		panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagens/reservado.png")), scroll_table, null);
 		scroll_table.setVisible(true);
@@ -124,14 +119,7 @@ public class Buscar extends JFrame {
 		modeloHospedes.addColumn("Nacionalidade");
 		modeloHospedes.addColumn("Telefone");
 		modeloHospedes.addColumn("Numero de Reserva");
-		List<Hospede> hospedes = new HospedesController().listar();
-		for (int i = 0; i < hospedes.size(); i++) {
-			Hospede hospede = hospedes.get(i);
-			String[] linhaDeHospedes = { hospede.getId().toString(), hospede.getNome(), hospede.getSobrenome(),
-					hospede.getDataNascimento().toString(), hospede.getNacionalidade(), hospede.getTelefone(),
-					hospede.getIdReserva().toString() };
-			modeloHospedes.addRow(linhaDeHospedes);
-		}
+		listarNaTabelaHospedes(new HospedesController().listar());
 		
 		TableModel modeloReservaFiltro = tbReservas.getModel();
 		filtroReservas = new TableRowSorter<TableModel>(modeloReservaFiltro);
@@ -245,7 +233,16 @@ public class Buscar extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//Buscar
+					if(!txtBuscar.getText().isBlank()) {
+						limparTabela();
+						if(verificarSeENumero(txtBuscar.getText())) {
+							listarNaTabelaReservas(new ReservasController().buscarPorId(Integer.valueOf(txtBuscar.getText())));
+							listarNaTabelaHospedes(new HospedesController().buscarPorIdDeReserva(Integer.valueOf(txtBuscar.getText())));
+						} else {
+							listarNaTabelaReservas(new ReservasController().buscarPorSobrenomeDeHospede(txtBuscar.getText()));
+							listarNaTabelaHospedes(new HospedesController().buscarPorSobrenome(txtBuscar.getText()));
+						}
+					}
 				}
 			});
 
@@ -304,6 +301,40 @@ public class Buscar extends JFrame {
 		lblExcluir.setBounds(0, 0, 122, 35);
 		btnDeletar.add(lblExcluir);
 		setResizable(false);
+	}
+
+
+	private void listarNaTabelaReservas(List<Reserva> reservas) {
+		for (int i = 0; i < reservas.size(); i++) {
+			Reserva reserva = reservas.get(i);
+			String[] linhaDeReservas = { reserva.getId().toString(), reserva.getDataEntrada().toString(),
+					reserva.getDataSaida().toString(), reserva.getValor().toString(), reserva.getFormaPagamento() };
+			modeloReservas.addRow(linhaDeReservas);
+		}
+	}
+	
+	private void listarNaTabelaHospedes(List<Hospede> hospedes ) {
+		for (int i = 0; i < hospedes.size(); i++) {
+			Hospede hospede = hospedes.get(i);
+			String[] linhaDeHospedes = { hospede.getId().toString(), hospede.getNome(), hospede.getSobrenome(),
+					hospede.getDataNascimento().toString(), hospede.getNacionalidade(), hospede.getTelefone(),
+					hospede.getIdReserva().toString() };
+			modeloHospedes.addRow(linhaDeHospedes);
+		}
+	}
+	
+	private void limparTabela() {
+		((DefaultTableModel) tbReservas.getModel()).setRowCount(0);
+		((DefaultTableModel) tbHospedes.getModel()).setRowCount(0);
+	}
+	
+	private boolean verificarSeENumero(String palavra) {
+		try {
+			Integer.valueOf(palavra);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	// Código que permite movimentar a janela pela tela seguindo a posição de "x" e

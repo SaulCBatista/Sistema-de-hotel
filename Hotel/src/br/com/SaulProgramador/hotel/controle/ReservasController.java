@@ -35,6 +35,10 @@ public class ReservasController {
 		return reservasDAO.buscarPorId(id);
 	}
 	
+	public List<Reserva> buscarPorSobrenomeDeHospede(String sobrenome) {
+		return reservasDAO.buscarPorSobrenomeDeHospede(sobrenome);
+	}
+	
 	public void deletar(Integer id, Integer idHospede) {
 		new HospedesController().deletar(idHospede, id);
 	}
@@ -59,4 +63,5 @@ public class ReservasController {
 	public boolean verificarData(Date dataEntrada, Date dataSaida) {
 		return dataEntrada.before(dataSaida);
 	}
+
 }

@@ -29,8 +29,12 @@ public class HospedesController {
 		return hospedesDAO.listar();
 	}
 	
-	public List<Hospede> buscarPorIdDeReservaOuSobrenome(Integer idReserva, String sobrenome) {
-		return hospedesDAO.buscarPorIdDeReservaOuSobrenome(idReserva, sobrenome);
+	public List<Hospede> buscarPorSobrenome(String sobrenome) {
+		return hospedesDAO.buscarPorSobrenome(sobrenome);
+	}
+	
+	public List<Hospede> buscarPorIdDeReserva(Integer idReserva) {
+		return hospedesDAO.buscarPorIdDeReserva(idReserva);
 	}
 	
 	public void deletar(Integer id, Integer idReserva) {
