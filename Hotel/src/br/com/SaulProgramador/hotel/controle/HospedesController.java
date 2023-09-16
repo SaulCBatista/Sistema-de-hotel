@@ -40,6 +40,11 @@ public class HospedesController {
 		return hospedesDAO.buscarIdDeReserva(id);
 	}
 	
+	public void atualizar(Integer id, String nome, String sobrenome, java.sql.Date dataNascimento, String nacionalidade,String telefone, Integer idReserva) {
+		Hospede hospede = new Hospede(id, nome, sobrenome, dataNascimento, nacionalidade, telefone, idReserva);
+		hospedesDAO.atualizar(hospede);
+	}
+	
 	public void deletar(Integer id) {
 		hospedesDAO.deletar(id);
 	}
@@ -58,6 +63,4 @@ public class HospedesController {
 		
 		return false;
 	}
-
-
 }

@@ -43,6 +43,8 @@ public class Buscar extends JFrame {
 	private JLabel labelAtras;
 	private JLabel labelExit;
 	int xMouse, yMouse;
+	boolean tabelaReservaSelecionada = false;
+	boolean tabelaHospedeSelecionada = false;
 
 	/**
 	 * Launch the application.
@@ -94,6 +96,15 @@ public class Buscar extends JFrame {
 		contentPane.add(panel);
 
 		tbReservas = new JTable();
+		
+		tbReservas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tabelaReservaSelecionada = true;
+				tabelaHospedeSelecionada = false;
+			}
+		});
+		
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
 		modeloReservas = (DefaultTableModel) tbReservas.getModel();
@@ -103,11 +114,20 @@ public class Buscar extends JFrame {
 		modeloReservas.addColumn("Valor");
 		modeloReservas.addColumn("Forma de Pago");
 		listarNaTabelaReservas(new ReservasController().listar());
-		JScrollPane scroll_table = new JScrollPane(tbReservas);
-		panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagens/reservado.png")), scroll_table, null);
-		scroll_table.setVisible(true);
+		JScrollPane scroll_tableReservas = new JScrollPane(tbReservas);
+		panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagens/reservado.png")), scroll_tableReservas, null);
+		scroll_tableReservas.setVisible(true);
 
 		tbHospedes = new JTable();
+		
+		tbHospedes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tabelaReservaSelecionada = false;
+				tabelaHospedeSelecionada = true;
+			}
+		});
+		
 		tbHospedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbHospedes.setFont(new Font("Roboto", Font.PLAIN, 16));
 		modeloHospedes = (DefaultTableModel) tbHospedes.getModel();
@@ -244,7 +264,12 @@ public class Buscar extends JFrame {
 		btnEditar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				AtualizarReservas();
+				if(tabelaReservaSelecionada) {
+					AtualizarReservas();
+				}
+				if(tabelaHospedeSelecionada) {
+					AtualizarHospedes();
+				}
 			}
 		});
 
@@ -256,35 +281,11 @@ public class Buscar extends JFrame {
 				int linhaHospedes = tbHospedes.getSelectedRow();
 				
 				if(linhaReservas >= 0) {
-					int confirmarReserva = JOptionPane.showConfirmDialog(null, "Deseja deletar os dados?");
-					
-					if(confirmarReserva == JOptionPane.YES_OPTION) {
-						
-						Integer id = Integer.valueOf(tbReservas.getValueAt(linhaReservas, 0).toString());
-						new HospedesController().deletar(id);
-						new ReservasController().deletar(id);
-						JOptionPane.showMessageDialog(contentPane, "Registro excluido!");
-						System.out.println("passei aqui");
-						limparTabela();
-						listarNaTabelaReservas(new ReservasController().listar());
-						listarNaTabelaHospedes(new HospedesController().listar());
-					} 
+					deletarReserva(linhaReservas); 
 				}
 				
 				if(linhaHospedes >= 0) {
-					int confirmarHospede = JOptionPane.showConfirmDialog(null, "Deseja deletar os dados?");
-					
-					if(confirmarHospede == JOptionPane.YES_OPTION) {
-						
-						Integer id = Integer.valueOf(tbHospedes.getValueAt(linhaHospedes, 0).toString());
-						Integer idReserva = new HospedesController().buscarIdDeReserva(id);
-						new HospedesController().deletar(id);
-						new ReservasController().deletar(idReserva);
-						JOptionPane.showMessageDialog(contentPane, "Registro excluido!");
-						limparTabela();
-						listarNaTabelaReservas(new ReservasController().listar());
-						listarNaTabelaHospedes(new HospedesController().listar());
-					}
+					deletarHospede(linhaHospedes);
 				}
 			}
 		});
@@ -353,14 +354,65 @@ public class Buscar extends JFrame {
 	private void AtualizarReservas() {
 		Optional.ofNullable(modeloReservas.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
 		.ifPresentOrElse(linha ->{
+			
 			Date dataEntrada = Date.valueOf(modeloReservas.getValueAt(tbReservas.getSelectedRow(), 1).toString());
 			Date dataSaida = Date.valueOf(modeloReservas.getValueAt(tbReservas.getSelectedRow(), 2).toString());
 			Double valor = Double.valueOf(modeloReservas.getValueAt(tbReservas.getSelectedRow(), 3).toString());
-			String formaPagamento = (String) modeloReservas.getValueAt(tbReservas.getSelectedRow(), 4);
+			String formaPagamento = modeloReservas.getValueAt(tbReservas.getSelectedRow(), 4).toString();
 			Integer id = Integer.valueOf(modeloReservas.getValueAt(tbReservas.getSelectedRow(), 0).toString());
 			new ReservasController().atualizar(id, dataEntrada, dataSaida, valor, formaPagamento);
-			JOptionPane.showMessageDialog(null, "Registro modificado com sucesso");
-		}, () -> JOptionPane.showMessageDialog(null, "Por favor, escolhar um registro"));
+			JOptionPane.showMessageDialog(this, String.format("Registro modificado com sucesso"));
+		}, () -> JOptionPane.showMessageDialog(this, "Por favor, escolhar um registro"));
+		
+	}
+	
+	private void AtualizarHospedes() {
+		Optional.ofNullable(modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), tbHospedes.getSelectedColumn()))
+		.ifPresentOrElse(linha ->{
+			
+			String nome = modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 1).toString();
+			String sobrenome = modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 2).toString();
+			Date dataNascimento = Date.valueOf(modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 3).toString());
+			String nacionalidade= modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 4).toString();
+			String telefone = modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 5).toString();
+			Integer idReserva = Integer.valueOf(modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 6).toString());
+			Integer id = Integer.valueOf(modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 0).toString());
+			new HospedesController().atualizar(id, nome, sobrenome, dataNascimento, nacionalidade, telefone, idReserva);
+			JOptionPane.showMessageDialog(this, String.format("Registro modificado com sucesso"));
+		}, () -> JOptionPane.showMessageDialog(this, "Por favor, escolhar um registro"));
+		
+	}
+	
+	private void deletarReserva(int linhaReservas) {
+		int confirmarReserva = JOptionPane.showConfirmDialog(null, "Deseja deletar os dados?");
+		
+		if(confirmarReserva == JOptionPane.YES_OPTION) {
+			
+			Integer id = Integer.valueOf(tbReservas.getValueAt(linhaReservas, 0).toString());
+			new HospedesController().deletar(id);
+			new ReservasController().deletar(id);
+			JOptionPane.showMessageDialog(contentPane, "Registro excluido!");
+			System.out.println("passei aqui");
+			limparTabela();
+			listarNaTabelaReservas(new ReservasController().listar());
+			listarNaTabelaHospedes(new HospedesController().listar());
+		}
+	}
+	
+	private void deletarHospede(int linhaHospedes) {
+		int confirmarHospede = JOptionPane.showConfirmDialog(null, "Deseja deletar os dados?");
+		
+		if(confirmarHospede == JOptionPane.YES_OPTION) {
+			
+			Integer id = Integer.valueOf(tbHospedes.getValueAt(linhaHospedes, 0).toString());
+			Integer idReserva = new HospedesController().buscarIdDeReserva(id);
+			new HospedesController().deletar(id);
+			new ReservasController().deletar(idReserva);
+			JOptionPane.showMessageDialog(contentPane, "Registro excluido!");
+			limparTabela();
+			listarNaTabelaReservas(new ReservasController().listar());
+			listarNaTabelaHospedes(new HospedesController().listar());
+		}
 	}
 	
 	private void limparTabela() {

@@ -116,7 +116,7 @@ public class HospedesDAO {
 
 	public void atualizar(Hospede hospede) {
 		try {
-			String sql = "UPDATE hospedes SET nome = ?, sobrenome = ?, data_nascimento = ?, nascionalidade = ?, telefone = ? WHERE id = ?";
+			String sql = "UPDATE hospedes SET nome = ?, sobrenome = ?, data_nascimento = ?, nacionalidade = ?, telefone = ? WHERE id = ?";
 
 			try (PreparedStatement declaracao = conexao.prepareStatement(sql)) {
 				declaracao.setString(1, hospede.getNome());
