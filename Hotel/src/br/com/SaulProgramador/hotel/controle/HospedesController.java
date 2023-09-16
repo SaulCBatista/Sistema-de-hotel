@@ -8,7 +8,6 @@ import java.util.List;
 
 import br.com.SaulProgramador.hotel.DAO.Conexao;
 import br.com.SaulProgramador.hotel.DAO.HospedesDAO;
-import br.com.SaulProgramador.hotel.DAO.ReservasDAO;
 import br.com.SaulProgramador.hotel.modelo.Hospede;
 
 public class HospedesController {
@@ -37,9 +36,12 @@ public class HospedesController {
 		return hospedesDAO.buscarPorIdDeReserva(idReserva);
 	}
 	
-	public void deletar(Integer id, Integer idReserva) {
+	public Integer buscarIdDeReserva(Integer id) {
+		return hospedesDAO.buscarIdDeReserva(id);
+	}
+	
+	public void deletar(Integer id) {
 		hospedesDAO.deletar(id);
-		new ReservasDAO(new Conexao().recuperarConexao()).deletar(idReserva);
 	}
 
 	public boolean verificarIdade(Date data) {
@@ -56,5 +58,6 @@ public class HospedesController {
 		
 		return false;
 	}
+
 
 }

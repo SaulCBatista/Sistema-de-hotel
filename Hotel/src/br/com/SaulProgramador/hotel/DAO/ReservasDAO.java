@@ -98,13 +98,14 @@ public class ReservasDAO {
 	
 	public void atualiazar(Reserva reserva) {
 		try {
-			String sql = "UPDATE reservas SET data_entrada = ?, data_saida = ?, valor = ?, forma_pagamento = ?";
+			String sql = "UPDATE reservas SET data_entrada = ?, data_saida = ?, valor = ?, forma_pagamento = ? WHERE id = ?";
 			
 			try(PreparedStatement declaracao = conexao.prepareStatement(sql)) {
 				declaracao.setDate(1, new java.sql.Date(reserva.getDataEntrada().getTime()));
 				declaracao.setDate(2, new java.sql.Date(reserva.getDataSaida().getTime()));
 				declaracao.setDouble(3, reserva.getValor());
 				declaracao.setString(4, reserva.getFormaPagamento());
+				declaracao.setInt(5, reserva.getId());
 				
 				declaracao.execute();
 			}

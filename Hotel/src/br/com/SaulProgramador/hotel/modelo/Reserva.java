@@ -6,14 +6,14 @@ public class Reserva {
 
 	private Integer id;
 	private Date dataEntrada;
-	private Date dateSaida;
+	private Date dataSaida;
 	private Double valor;
 	private String formaPagamento;
 
-	public Reserva(Integer id, Date dataEntrada, Date dateSaida, Double valor, String formaPagamento) {
+	public Reserva(Integer id, Date dataEntrada, Date dataSaida, Double valor, String formaPagamento) {
 		this.id = id;
 		this.dataEntrada = dataEntrada;
-		this.dateSaida = dateSaida;
+		this.dataSaida = dataSaida;
 		this.valor = valor;
 		this.formaPagamento = formaPagamento;
 	}
@@ -27,11 +27,11 @@ public class Reserva {
 	}
 
 	public Date getDataSaida() {
-		return dateSaida;
+		return dataSaida;
 	}
 
 	public void setDateSaida(Date dateSaida) {
-		this.dateSaida = dateSaida;
+		this.dataSaida = dateSaida;
 	}
 
 	public Double getValor() {

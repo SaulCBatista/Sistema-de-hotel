@@ -39,8 +39,13 @@ public class ReservasController {
 		return reservasDAO.buscarPorSobrenomeDeHospede(sobrenome);
 	}
 	
-	public void deletar(Integer id, Integer idHospede) {
-		new HospedesController().deletar(idHospede, id);
+	public void atualizar(Integer id, Date dataEntrada, Date dataSaida, Double valor, String formaPagamento) {
+		Reserva reserva = new Reserva(id, dataEntrada, dataSaida, valor, formaPagamento);
+		reservasDAO.atualiazar(reserva);
+	}
+	
+	public void deletar(Integer id) {
+		reservasDAO.deletar(id);
 	}
 
 	public void cancelarReserva(Integer idDaReserva) {

@@ -93,6 +93,26 @@ public class HospedesDAO {
 		}
 		
 	}
+	
+	public Integer buscarIdDeReserva(Integer id) {
+		Integer idDeReserva = null;
+		try {
+			String sql = "SELECT * FROM hospedes WHERE id = ?"; 
+			try(PreparedStatement declaracao = conexao.prepareStatement(sql)) {
+				declaracao.setInt(1, id);
+				declaracao.execute();	
+				
+				try(ResultSet resultado = declaracao.getResultSet()) {
+					while(resultado.next()) {
+						idDeReserva = resultado.getInt(7);
+					}
+				}
+			}
+			return idDeReserva;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public void atualizar(Hospede hospede) {
 		try {
@@ -104,6 +124,7 @@ public class HospedesDAO {
 				declaracao.setDate(3, new java.sql.Date(hospede.getDataNascimento().getTime()));
 				declaracao.setString(4, hospede.getNacionalidade());
 				declaracao.setString(5, hospede.getTelefone());
+				declaracao.setInt(6, hospede.getId());
 
 				declaracao.execute();
 			}
@@ -114,10 +135,11 @@ public class HospedesDAO {
 
 	public void deletar(Integer id) {
 		try {
-			String sql = "DELETE FROM hospedes WHERE id = ?";
+			String sql = "DELETE FROM hospedes WHERE id = ? OR id_reservaFK = ?";
 
 			try (PreparedStatement declaracao = conexao.prepareStatement(sql)) {
 				declaracao.setInt(1, id);
+				declaracao.setInt(2, id);
 				declaracao.execute();
 			}
 		} catch (SQLException e) {
@@ -136,5 +158,6 @@ public class HospedesDAO {
 		}
 
 	}
+
 
 }
