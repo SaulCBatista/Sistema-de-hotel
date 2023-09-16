@@ -1,7 +1,6 @@
 package br.com.SaulProgramador.hotel.visao;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -45,22 +44,6 @@ public class Buscar extends JFrame {
 	int xMouse, yMouse;
 	boolean tabelaReservaSelecionada = false;
 	boolean tabelaHospedeSelecionada = false;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Buscar frame = new Buscar();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Criação da tela.
